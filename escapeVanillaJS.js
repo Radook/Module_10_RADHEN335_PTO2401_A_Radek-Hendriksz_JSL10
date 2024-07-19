@@ -8,6 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     });
 
+    document.getElementById("solveRoom2").addEventListener("click", () => {
+        const jsConcepts = new Set(['closure', 'scope', 'hoisting', 'async']); // Added 'async' to jsConcepts
+        const reactConcepts = new Set(['components', 'jsx', 'hooks', 'async']);
+        const commonConcepts = findIntersection(jsConcepts, reactConcepts);
+        document.getElementById("room2Result").textContent = `The code to unlock the door is: ${Array.from(commonConcepts).join(', ')}`;
+    });
+
+    // 🪲 Bug: Asynchronous function ?
     document.getElementById("solveRoom3").addEventListener("click", () => {
         fetch('directions.json') 
             .then(response => response.json())
@@ -18,19 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("room3Result").textContent = message;
             });
     });
-
-    // 🪲 Bug: Asynchronous function ?
-    document.getElementById("solveRoom3").addEventListener("click", () => {
-        fetch('directions.json') 
-            .then(response => response.json())
-            .then(directions => {
-                navigateLabyrinth(directions)
-                    .then(message => {
-                        // 🪲 Bug: Incorrect method
-                        document.getElementById("room3Result").innerHTML = message;
-                    });
-            });
-    });
 });
 
 function findMostRecentBook(books) {
@@ -39,8 +34,7 @@ function findMostRecentBook(books) {
 }
 
 function findIntersection(setA, setB) {
-    // 🪲 Bug: Incorrect logic
-    const intersection = new Set([...setA]);
+    const intersection = new Set([...setA].filter(x => setB.has(x)));
     return intersection;
 }
 
